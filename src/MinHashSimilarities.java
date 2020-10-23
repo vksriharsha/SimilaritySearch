@@ -1,5 +1,7 @@
+import javax.sound.midi.Soundbank;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -17,6 +19,18 @@ public class MinHashSimilarities {
     }
 
     public static void main(String[] args) {
+
+        MinHashSimilarities mhs = new MinHashSimilarities("/Users/harshavk/Desktop/gitrepos/Docs/space", 400);
+
+        for(int i = 2; i<1000; i++) {
+            double result = mhs.approximateJaccard("space-1.txt", "space-"+i+".txt");
+            System.out.println("Estimate Jac "+i+ " : "+ result);
+        }
+
+        for(int i = 2; i<1000 ;i++) {
+            double exactJac = mhs.exactJaccard("space-1.txt","space-"+i+".txt");
+            System.out.println("Exact Jac "+i+ " : "+ exactJac);
+        }
 
     }
 
@@ -43,8 +57,8 @@ public class MinHashSimilarities {
         int union = 0;
 
         for (int i = 0; i < numTerms; i++){
-            intersection += Math.min(termDocumentMatrix[index1][i], termDocumentMatrix[index2][i]);
-            union += Math.max(termDocumentMatrix[index1][i], termDocumentMatrix[index2][i]);
+            intersection += Math.min(termDocumentMatrix[i][index1], termDocumentMatrix[i][index2]);
+            union += Math.max(termDocumentMatrix[i][index1], termDocumentMatrix[i][index2]);
         }
         double result = (double) intersection/union;
 
@@ -89,7 +103,11 @@ public class MinHashSimilarities {
         }
 //        String[] file = allDocs();
 
-        int[] result = minHashMatrix[index];
+        int[] result = MatrixOperations.getColumn(minHashMatrix, index);
         return result;
+    }
+
+    public MinHash getMinHash() {
+        return minHash;
     }
 }

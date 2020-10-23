@@ -1,16 +1,15 @@
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class MinHash {
 
     private String folder;
     private int numPermutations;
     private int[][] termDocumentMatrix;
+    private int[][] modifiedTermDocumentMatrix;
     private int[][] minHashMatrix;
     private int numTerms;
+    private int modifiedNumTerms;
     private int a[];
     private int b[];
     private int[][] permutations;
@@ -26,14 +25,14 @@ public class MinHash {
 
         a = new int[this.numPermutations];
         b = new int[this.numPermutations];
-        permutations = new int[this.numTerms][this.numPermutations];
+        permutations = new int[this.modifiedNumTerms][this.numPermutations];
 
         for(int i=0; i<this.numPermutations; i++){
-            a[i] = PrimeNumberGenerator.getRandomPrime(numTerms());
-            b[i] = PrimeNumberGenerator.getRandomPrime(numTerms());
+            a[i] = PrimeNumberGenerator.getRandomPrime(modifiedNumTerms());
+            b[i] = PrimeNumberGenerator.getRandomPrime(modifiedNumTerms());
 
-            for(int j=0; j<numTerms(); j++){
-                permutations[j][i] = (a[i]*j+b[i])%numTerms();
+            for(int j=0; j<modifiedNumTerms(); j++){
+                permutations[j][i] = (a[i]*j+b[i])%modifiedNumTerms();
             }
 
         }
@@ -71,30 +70,17 @@ public class MinHash {
     public void preProcess(){
 
             String[] docs = allDocs();
-            HashMap<String,Integer[]> termDocHash = new HashMap<String,Integer[]>();
+            LinkedHashMap<String,Integer[]> modifiedTermDocHash = new LinkedHashMap<String,Integer[]>();
+            LinkedHashMap<String,Integer[]> termDocHash = new LinkedHashMap<String,Integer[]>();
+
             int fileNum = 0;
             try {
                 for (String doc : docs) {
-                    File f = new File(folder + "/" + doc);
+                    File f = new File(folder + File.separator + doc);
                     if (f.isFile()) {
                         Scanner scanner = new Scanner(f);
 
-                        System.out.println(scanner.next());
-                        if(scanner.hasNext()){
-                            if(fileNum == 0){
-                                System.out.println("Scanner.hasnext is working");
-                            }
-                        }
-                        else if(scanner.hasNextLine()){
-                            if(fileNum == 0){
-                                System.out.println("Scanner.hasnextLine is working");
-                            }
-                        }
                         while(scanner.hasNext()){
-
-                            if(fileNum == 0){
-                                System.out.println("Scanner.hasnext is working");
-                            }
 
                             String nextword = scanner.next();
                             String nextwordlcs = nextword.toLowerCase();
@@ -105,8 +91,6 @@ public class MinHash {
 
                             }
                             else{
-
-
                                 nextwordlcs = nextwordlcs.replace(".","").replace(",","").replace(":","")
                                         .replace(";","").replace("'","");
 
@@ -114,20 +98,34 @@ public class MinHash {
                                 boolean notNovel = true;
                                 int addendum = 1000;
                                 String oldword = nextwordlcs;
+
+                                if(termDocHash.get(nextwordlcs) == null){
+                                    Integer[] freq = new Integer[docs.length];
+                                    for (int i = 0; i < docs.length; i++) {
+                                        freq[i] = 0;
+                                    }
+                                    freq[fileNum]++;
+                                    termDocHash.put(nextwordlcs, freq);
+                                }
+                                else{
+                                    Integer[] freq = termDocHash.get(nextwordlcs);
+                                    freq[fileNum]++;
+                                    termDocHash.put(nextwordlcs, freq);
+                                }
                                 while(notNovel) {
-                                    if (termDocHash.get(nextwordlcs) == null || termDocHash.get(nextwordlcs)[fileNum]==0) {
+                                    if (modifiedTermDocHash.get(nextwordlcs) == null || modifiedTermDocHash.get(nextwordlcs)[fileNum]==0) {
                                         Integer[] freq = null;
-                                        if(termDocHash.get(nextwordlcs) == null) {
+                                        if(modifiedTermDocHash.get(nextwordlcs) == null) {
                                             freq = new Integer[docs.length];
                                             for (int i = 0; i < docs.length; i++) {
                                                 freq[i] = 0;
                                             }
                                         }
                                         else{
-                                            freq = termDocHash.get(nextwordlcs);
+                                            freq = modifiedTermDocHash.get(nextwordlcs);
                                         }
                                         freq[fileNum]++;
-                                        termDocHash.put(nextwordlcs, freq);
+                                        modifiedTermDocHash.put(nextwordlcs, freq);
                                         notNovel = false;
                                     } else {
                                         nextwordlcs = oldword+addendum+"";
@@ -146,13 +144,16 @@ public class MinHash {
                 e.printStackTrace();
             }
 
+            modifiedTermDocumentMatrix = new int[modifiedTermDocHash.size()][fileNum];
             termDocumentMatrix = new int[termDocHash.size()][fileNum];
 
             //System.out.println("Resulting hashmap is : "+ termDocHash.size());
 
+            modifiedNumTerms = modifiedTermDocHash.size();
             numTerms = termDocHash.size();
+
             int j=0;
-            for (Map.Entry<String,Integer[]> entry : termDocHash.entrySet()){
+            for (Map.Entry<String,Integer[]> entry : modifiedTermDocHash.entrySet()){
                 //System.out.println(j+ " : "+ entry.getKey());
                 Integer[] wordfreq = entry.getValue();
                 int[] wordfreqint = new int[wordfreq.length];
@@ -160,11 +161,27 @@ public class MinHash {
                 for(int k=0; k<wordfreq.length; k++){
                     wordfreqint[k] = (int)wordfreq[k];
                 }
-                termDocumentMatrix[j] = wordfreqint;
+                modifiedTermDocumentMatrix[j] = wordfreqint;
 
                 j++;
 
             }
+
+            int t=0;
+
+            for (Map.Entry<String,Integer[]> entry : termDocHash.entrySet()){
+            //System.out.println(j+ " : "+ entry.getKey());
+            Integer[] wordfreq = entry.getValue();
+            int[] wordfreqint = new int[wordfreq.length];
+
+            for(int k=0; k<wordfreq.length; k++){
+                wordfreqint[k] = (int)wordfreq[k];
+            }
+            termDocumentMatrix[t] = wordfreqint;
+
+            t++;
+
+        }
 
 
 
@@ -200,23 +217,9 @@ public class MinHash {
 
         for(int i=0; i<numPermutations(); i++){
             for(int j=0; j< allDocs().length; j++){
-                int [] termCol = MatrixOperations.getColumn(termDocumentMatrix,j);
+                int [] termCol = MatrixOperations.getColumn(modifiedTermDocumentMatrix,j);
                 int [] permCol = MatrixOperations.getColumn(permutations,i);
                 int [] res = MatrixOperations.elementWiseMultiplication(termCol, permCol);
-
-                boolean all = true;
-                for(int k=0; k<res.length; k++){
-                    if(res[k] == -1){
-
-                    }
-                    else{
-                        all = false;
-                    }
-                }
-
-                if(all){
-                    System.out.println(allDocs()[j]);
-                }
                 int minRes = MatrixOperations.minimumValueInVector(res);
                 minHashMatrix[i][j] = minRes;
             }
@@ -247,6 +250,10 @@ public class MinHash {
         return this.numTerms;
     }
 
+    public int modifiedNumTerms(){
+        return this.modifiedNumTerms;
+    }
+
 
     //Returns the number of permutations used to construct the MinHash matrix
     public int numPermutations(){
@@ -268,13 +275,17 @@ public class MinHash {
     }
 
     public static void main(String[] args) {
-        MinHash mh = new MinHash("/Users/harshavk/Desktop/gitrepos/Docs/space2",10);
+        MinHash mh = new MinHash("/Users/harshavk/Desktop/gitrepos/Docs/samp",10);
 //        for(String s : mh.allDocs())
 //        System.out.println(s);
 
-        int[][] output = mh.termDocumentMatrix();
+        int[][] output = mh.modifiedTermDocumentMatrix;
         int[][] mhm = mh.minHashMatrix();
         print2D(output);
+//        System.out.println();
+//        System.out.println("***********************************");
+//        System.out.println();
+//        print2D(mh.modifiedTermDocumentMatrix);
 
 
 
@@ -305,52 +316,6 @@ class PrimeNumberGenerator{
         while ((divisor <= Math.sqrt(num)) && (num % divisor != 0))
             divisor += 2;
         return num % divisor != 0;
-    }
-
-}
-
-
-class MatrixOperations{
-
-    public static int[] elementWiseMultiplication(int[] a1, int[] a2){
-        int [] output = new int[a1.length];
-        for(int i=0; i<a1.length ; i++) {
-
-            if(a1[i] == 0){
-                output[i] = -1;
-            }
-            else {
-                output[i] = a1[i] * a2[i];
-            }
-
-        }
-        return output;
-    }
-
-
-    public static int minimumValueInVector(int [] a){
-        int min = 999999;
-        for(int i=0; i<a.length; i++){
-            if(a[i] < min && a[i] >= 0){
-                min = a[i];
-            }
-        }
-
-        if(min == 999999){
-            for(int i=0; i<a.length; i++){
-                //System.out.print(a[i]+", ");
-                }
-            //System.out.println();
-        }
-        return min;
-    }
-
-    public static int[] getColumn(int[][] array, int index){
-        int[] column = new int[array.length]; // Here I assume a rectangular 2D array!
-        for(int i=0; i<column.length; i++){
-            column[i] = array[i][index];
-        }
-        return column;
     }
 
 }
