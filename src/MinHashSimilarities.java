@@ -70,13 +70,13 @@ public class MinHashSimilarities {
 
         int count = 0;
 
-        int[] file1Sig = minHasSig(file1);
-        int[] file2Sig = minHasSig(file2);
+        int file1Sig = minHasSigIndex(file1);
+        int file2Sig = minHasSigIndex(file2);
 
-        int length = file1Sig.length;
+        int length = minHashMatrix.length;
 
         for (int i = 0; i < length; i++){
-            if (file1Sig[i] == file2Sig[i]){
+            if (minHashMatrix[i][file1Sig] == minHashMatrix[i][file2Sig]){
                 count ++;
             }
         }
@@ -105,6 +105,27 @@ public class MinHashSimilarities {
 
         int[] result = MatrixOperations.getColumn(minHashMatrix, index);
         return result;
+    }
+
+
+    public int minHasSigIndex(String fileName){
+
+        String[] allDocs = minHash.allDocs();
+        ArrayList<String> list1 = new ArrayList<>();
+        LinkedList<String> list2 = new LinkedList<>();
+
+
+//        list1.size();
+
+        int index = 0;
+        for (int i = 0; i < allDocs.length; i ++){
+            if (allDocs[i].equals(fileName)){
+                index = i;
+            }
+        }
+//        String[] file = allDocs();
+
+        return index;
     }
 
     public MinHash getMinHash() {

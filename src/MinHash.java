@@ -23,6 +23,7 @@ public class MinHash {
 
         preProcess();
 
+        System.out.println("Ended Preprocessing");
         a = new int[this.numPermutations];
         b = new int[this.numPermutations];
         permutations = new int[this.modifiedNumTerms][this.numPermutations];
@@ -37,6 +38,7 @@ public class MinHash {
 
         }
 
+        System.out.println("Ended permutations generation");
         //print2D(permutations);
 
 //        for(int i=0; i<numPermutations(); i++) {
@@ -76,6 +78,7 @@ public class MinHash {
             int fileNum = 0;
             try {
                 for (String doc : docs) {
+                    System.out.println("Processing : "+doc);
                     File f = new File(folder + File.separator + doc);
                     if (f.isFile()) {
                         Scanner scanner = new Scanner(f);
@@ -194,16 +197,18 @@ public class MinHash {
         minHashMatrix = new int[numPermutations()][allDocs().length];
 
         for(int i=0 ; i<numPermutations(); i++){
-            for(int j=0; j< allDocs().length; j++){
-                minHashMatrix[i][j] = INF;
-            }
+//            for(int j=0; j< allDocs().length; j++){
+//                minHashMatrix[i][j] = INF;
+//            }
+            Arrays.fill(minHashMatrix[i],INF);
         }
 
+        System.out.println("initialized minHash");
 
 //        for(int i=0; i<numPermutations(); i++){
-//            for(int j=0; j<numTerms(); j++){
+//            for(int j=0; j<modifiedNumTerms(); j++){
 //                for(int k=0; k< allDocs().length; k++){
-//                    if(termDocumentMatrix[j][k] == 1){
+//                    if(modifiedTermDocumentMatrix[j][k] == 1){
 //
 //                        if(minHashMatrix[i][k] > permutations[j][i]){
 //                            minHashMatrix[i][k] = permutations[j][i];
@@ -217,16 +222,17 @@ public class MinHash {
 
         for(int i=0; i<numPermutations(); i++){
             for(int j=0; j< allDocs().length; j++){
-                int [] termCol = MatrixOperations.getColumn(modifiedTermDocumentMatrix,j);
-                int [] permCol = MatrixOperations.getColumn(permutations,i);
-                int [] res = MatrixOperations.elementWiseMultiplication(termCol, permCol);
+//                int [] termCol = MatrixOperations.getColumn(modifiedTermDocumentMatrix,j);
+//                int [] permCol = MatrixOperations.getColumn(permutations,i);
+                int [] res = MatrixOperations.elementWiseMultiplication(modifiedTermDocumentMatrix,j, permutations, i);
                 int minRes = MatrixOperations.minimumValueInVector(res);
                 minHashMatrix[i][j] = minRes;
             }
+            System.out.println("Done for permutation : "+i);
         }
 
 
-
+        System.out.println("Done Calculating minHash");
 
 
         return minHashMatrix;
@@ -275,12 +281,13 @@ public class MinHash {
     }
 
     public static void main(String[] args) {
-        MinHash mh = new MinHash("/Users/harshavk/Desktop/gitrepos/Docs/samp",10);
+        MinHash mh = new MinHash("/Users/harshavk/Desktop/gitrepos/Docs/space",10);
 //        for(String s : mh.allDocs())
 //        System.out.println(s);
 
         int[][] output = mh.modifiedTermDocumentMatrix;
         int[][] mhm = mh.minHashMatrix();
+        System.out.println("Printing matrix");
         print2D(output);
 //        System.out.println();
 //        System.out.println("***********************************");
