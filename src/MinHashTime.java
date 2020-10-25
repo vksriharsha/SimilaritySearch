@@ -4,7 +4,7 @@ public class MinHashTime {
         long startTime = System.nanoTime();
         MinHashSimilarities minHashSimilarities = new MinHashSimilarities(folder, numPermutations);
         long stopTime = System.nanoTime();
-        System.out.println("Time taken to initialize MinHashSimilarities: "+ (stopTime - startTime)+" ns");
+        System.out.println("Time taken to initialize MinHashSimilarities: "+ ((stopTime - startTime)/60_000_000_000.0)+" minutes");
 
         System.out.println();
 
@@ -18,7 +18,9 @@ public class MinHashTime {
                 jaccardApprox[i][j]= minHashSimilarities.approximateJaccard(docs[i], docs[j]);
                 jaccardApprox[j][i] = jaccardApprox[i][j];
 
+
             }
+            System.out.println("Approx jaccard done for doc: "+i);
         }
         System.out.printf("Approximate Jaccard values matrix :");
         System.out.println();
@@ -26,7 +28,7 @@ public class MinHashTime {
 
         long stopTimeApproxJac = System.nanoTime();
         System.out.println();
-        System.out.println("Time taken for approx Jaccard Similarity calculation: "+ (stopTimeApproxJac - startTimeApproxJac)+ " ns");
+        System.out.println("Time taken for approx Jaccard Similarity calculation: "+ ((stopTimeApproxJac - startTimeApproxJac)/60_000_000_000.0)+ " minutes");
 
         double [][] jaccardExact = new double[docs.length][docs.length];
         long startTimeExactJac = System.nanoTime();
@@ -36,13 +38,14 @@ public class MinHashTime {
                 jaccardExact[j][i] = jaccardExact[i][j];
 
             }
+            System.out.println("Exact jaccard done for doc: "+i);
         }
         System.out.println("Exact Jaccard values matrix :");
         System.out.println();
         print2D(jaccardExact);
         long stopTimeExactJac = System.nanoTime();
         System.out.println();
-        System.out.println("Time taken for exact Jaccard Similarity calculation: "+ (stopTimeExactJac - startTimeExactJac)+ " ns");
+        System.out.println("Time taken for exact Jaccard Similarity calculation: "+ ((stopTimeExactJac - startTimeExactJac)/60_000_000_000.0)+ " minutes");
 
     }
 
@@ -62,7 +65,7 @@ public class MinHashTime {
 
     public static void main(String[] args) {
         MinHashTime minHashTime = new MinHashTime();
-        minHashTime.timer("/Users/harshavk/Desktop/gitrepos/Docs/space", 20);
+        minHashTime.timer("/Users/harshavk/Desktop/gitrepos/Docs/space2", 20);
 
     }
 }

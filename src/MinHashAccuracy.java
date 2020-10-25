@@ -6,7 +6,7 @@ public class MinHashAccuracy {
     // approximate Jaccard similarity
     public int accuracy(String folder, int numPermutations, double error){
         MinHashSimilarities minHashSim = new MinHashSimilarities(folder, numPermutations);
-        MinHash minHash = new MinHash(folder, numPermutations);
+        MinHash minHash = minHashSim.getMinHash();
         String[] allDocs = minHash.allDocs();
         double exactJS = 0.0;
         double approximateJS = 0.0;
@@ -26,6 +26,14 @@ public class MinHashAccuracy {
         }
 
     return numPairs;
+    }
+
+    public static void main(String[] args) {
+
+        MinHashAccuracy minHashAccuracy = new MinHashAccuracy();
+        int accuracy = minHashAccuracy.accuracy("/Users/harshavk/Desktop/gitrepos/Docs/space",10, 0.05);
+
+        System.out.println("Number of pairs for which exact and approximate similarities differ by more than epsilon : "+accuracy);
     }
 }
 

@@ -1,14 +1,15 @@
+import java.util.Arrays;
+
 public class MatrixOperations {
 
-    public static int[] elementWiseMultiplication(int[] a1, int[] a2){
+    public static int[] elementWiseMultiplication(int[][] a1, int a1index, int[][] a2, int a2index){
         int [] output = new int[a1.length];
+        Arrays.fill(output,-1);
+
         for(int i=0; i<a1.length ; i++) {
 
-            if(a1[i] == 0){
-                output[i] = -1;
-            }
-            else {
-                output[i] = a1[i] * a2[i];
+            if(a1[i][a1index] != 0){
+                output[i] = a1[i][a1index] * a2[i][a2index];
             }
 
         }
@@ -24,12 +25,6 @@ public class MatrixOperations {
             }
         }
 
-        if(min == 999999){
-            for(int i=0; i<a.length; i++){
-                //System.out.print(a[i]+", ");
-            }
-            //System.out.println();
-        }
         return min;
     }
 
