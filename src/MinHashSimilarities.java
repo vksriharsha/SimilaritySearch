@@ -20,7 +20,9 @@ public class MinHashSimilarities {
 
     public static void main(String[] args) {
 
-        MinHashSimilarities mhs = new MinHashSimilarities("/Users/harshavk/Desktop/gitrepos/Docs/space", 400);
+//        MinHashSimilarities mhs = new MinHashSimilarities("/Users/harshavk/Desktop/gitrepos/Docs/space", 400);
+
+        MinHashSimilarities mhs = new MinHashSimilarities("C:\\Users\\duyph\\OneDrive\\535\\PA2\\space\\space", 400);
 
         for(int i = 2; i<1000; i++) {
             double result = mhs.approximateJaccard("space-1.txt", "space-"+i+".txt");
@@ -102,6 +104,7 @@ public class MinHashSimilarities {
             }
         }
 //        String[] file = allDocs();
+
 
         int[] result = MatrixOperations.getColumn(minHashMatrix, index);
         return result;

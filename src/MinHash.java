@@ -261,6 +261,7 @@ public class MinHash {
         return this.numPermutations;
     }
 
+
     public static void print2D(int mat[][])
     {
         // Loop through all rows
@@ -316,6 +317,15 @@ class PrimeNumberGenerator{
         while ((divisor <= Math.sqrt(num)) && (num % divisor != 0))
             divisor += 2;
         return num % divisor != 0;
+    }
+
+    public static int getClosestPrime (int num){
+
+        while (!isPrime(num)){
+            num++;
+        }
+        return num;
+
     }
 
 }
