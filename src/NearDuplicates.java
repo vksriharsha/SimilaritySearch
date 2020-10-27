@@ -39,11 +39,20 @@ public class NearDuplicates {
             r = numPermutations/i;
             s = Math.pow(1.0 / i, 1.0 / r);
 
-            if (Math.abs(s - threshold) < INF){
+//            if (Math.abs(s - threshold) < INF){
+//                INF = Math.abs(s - threshold);
+//                System.out.println("Value of s = "+s);
+//                bandValue = i;
+//            }
+
+            if(s<threshold && Math.abs(s - threshold) < INF){
                 INF = Math.abs(s - threshold);
+                System.out.println("Value of s = "+s);
                 bandValue = i;
             }
         }
+
+        System.out.println("Band Value chosen : "+bandValue);
         return bandValue;
     }
 
@@ -57,14 +66,14 @@ public class NearDuplicates {
     }
 
     public static void main(String[] args) {
-//        NearDuplicates nearDuplicates = new NearDuplicates("G:\\test", 400, 0.95);
+//        NearDuplicates nearDuplicates = new NearDuplicates("/Users/harshavk/Desktop/gitrepos/Docs/F17PA2", 400, 0.95);
 //
-//        ArrayList<String> a = nearDuplicates.nearDuplciateDetector("space-2.txt");
+//        ArrayList<String> a = nearDuplicates.nearDuplciateDetector("space-999.txt");
 //        System.out.println(a);
 
-        MinHashSimilarities minHashSimilarities = new MinHashSimilarities("G:\\test", 400);
+        MinHashSimilarities minHashSimilarities = new MinHashSimilarities("/Users/harshavk/Desktop/gitrepos/Docs/F17PA2", 1);
 
-        System.out.printf(minHashSimilarities.exactJaccard("space-2.txt", "space-2 - Copy.txt")+ "");
+        System.out.printf(minHashSimilarities.exactJaccard("space-2.txt", "space-800.txt")+ "");
 
     }
 

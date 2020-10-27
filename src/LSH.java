@@ -23,7 +23,10 @@ public class LSH {
         this.bands = bands;
         this.k = minHashMatrix.length;
         this.r = this.k/this.bands;
+        System.out.println("Value of K = "+k);
+        System.out.println("Value of r = "+r);
         this.remainder = this.k%this.bands;
+        System.out.println("Value of remainder = "+remainder);
         this.lengthHashTable = PrimeNumberGenerator.getClosestPrime(docNames.length);
 
         hashTables = new ArrayList[lengthHashTable][this.bands];
@@ -44,7 +47,7 @@ public class LSH {
                 for(int x = r*j; x < r*(j+1); x++){
                     if(j==bands-1){
                         if(x<k){
-                            stringBand += minHashMatrix[x][i];
+                            stringBand += minHashMatrix[x][i]+"";
                         }
                         else{
                             break;
@@ -100,7 +103,7 @@ public class LSH {
             for(int x = r*j; x < r*(j+1); x++){
                 if(j==bands-1){
                     if(x<k){
-                        stringBand += minHashMatrix[x][index];
+                        stringBand += minHashMatrix[x][index]+"";
                     }
                     else{
                         break;

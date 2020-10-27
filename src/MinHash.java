@@ -78,7 +78,7 @@ public class MinHash {
             int fileNum = 0;
             try {
                 for (String doc : docs) {
-                    System.out.println("Processing : "+doc);
+                    //System.out.println("Processing : "+doc);
                     File f = new File(folder + File.separator + doc);
                     if (f.isFile()) {
                         Scanner scanner = new Scanner(f);
@@ -228,7 +228,7 @@ public class MinHash {
                 int minRes = MatrixOperations.minimumValueInVector(res);
                 minHashMatrix[i][j] = minRes;
             }
-            System.out.println("Done for permutation : "+i);
+            //System.out.println("Done for permutation : "+i);
         }
 
 

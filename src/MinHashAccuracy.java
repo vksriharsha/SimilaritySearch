@@ -31,9 +31,90 @@ public class MinHashAccuracy {
     public static void main(String[] args) {
 
         MinHashAccuracy minHashAccuracy = new MinHashAccuracy();
-        int accuracy = minHashAccuracy.accuracy("/Users/harshavk/Desktop/gitrepos/Docs/space",10, 0.05);
+        String dir = "/Users/harshavk/Desktop/gitrepos/Docs/space";
 
-        System.out.println("Number of pairs for which exact and approximate similarities differ by more than epsilon : "+accuracy);
+
+        int accuracy = minHashAccuracy.accuracy(dir,400, 0.04);
+        System.out.println("Experiment 1 : Permutations = 400, error = 0.04");
+        System.out.println("Num documents miscalculated: "+accuracy);
+        System.out.println("Percentage of docs miscalculated: "+ ((accuracy*100)/500500));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        int accuracy2 = minHashAccuracy.accuracy(dir,400, 0.07);
+        System.out.println("Experiment 2 : Permutations = 400, error = 0.07");
+        System.out.println("Num documents miscalculated: "+accuracy2);
+        System.out.println("Percentage of docs miscalculated: "+ ((accuracy2*100)/500500));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        int accuracy3 = minHashAccuracy.accuracy(dir,400, 0.09);
+        System.out.println("Experiment 3 : Permutations = 400, error = 0.09");
+        System.out.println("Num documents miscalculated: "+accuracy3);
+        System.out.println("Percentage of docs miscalculated: "+ ((accuracy3*100)/500500));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        int accuracy4 = minHashAccuracy.accuracy(dir,600, 0.04);
+        System.out.println("Experiment 4 : Permutations = 600, error = 0.04");
+        System.out.println("Num documents miscalculated: "+accuracy4);
+        System.out.println("Percentage of docs miscalculated: "+ ((accuracy4*100)/500500));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        int accuracy5 = minHashAccuracy.accuracy(dir,600, 0.07);
+        System.out.println("Experiment 5 : Permutations = 600, error = 0.07");
+        System.out.println("Num documents miscalculated: "+accuracy5);
+        System.out.println("Percentage of docs miscalculated: "+ ((accuracy5*100)/500500));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        int accuracy6 = minHashAccuracy.accuracy(dir,600, 0.09);
+        System.out.println("Experiment 6 : Permutations = 600, error = 0.09");
+        System.out.println("Num documents miscalculated: "+accuracy6);
+        System.out.println("Percentage of docs miscalculated: "+ ((accuracy6*100)/500500));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+
+        int accuracy7 = minHashAccuracy.accuracy(dir,800, 0.04);
+        System.out.println("Experiment 7 : Permutations = 800, error = 0.04");
+        System.out.println("Num documents miscalculated: "+accuracy7);
+        System.out.println("Percentage of docs miscalculated: "+ ((accuracy7*100)/500500));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        int accuracy8 = minHashAccuracy.accuracy(dir,800, 0.07);
+        System.out.println("Experiment 8 : Permutations = 800, error = 0.07");
+        System.out.println("Num documents miscalculated: "+accuracy8);
+        System.out.println("Percentage of docs miscalculated: "+ ((accuracy8*100)/500500));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+        int accuracy9 = minHashAccuracy.accuracy(dir,800, 0.09);
+        System.out.println("Experiment 9 : Permutations = 800, error = 0.09");
+        System.out.println("Num documents miscalculated: "+accuracy9);
+        System.out.println("Percentage of docs miscalculated: "+ ((accuracy9*100)/500500));
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
     }
 }
 
