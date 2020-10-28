@@ -25,12 +25,12 @@ public class MinHashSimilarities {
         MinHashSimilarities mhs = new MinHashSimilarities("C:\\Users\\duyph\\OneDrive\\535\\PA2\\space\\space", 400);
 
         for(int i = 2; i<1000; i++) {
-            double result = mhs.approximateJaccard("space-1.txt", "space-"+i+".txt");
+            double result = mhs.approximateJaccard(0, i, mhs.getMinHash().minHashMatrix().length);
             System.out.println("Estimate Jac "+i+ " : "+ result);
         }
 
         for(int i = 2; i<1000 ;i++) {
-            double exactJac = mhs.exactJaccard("space-1.txt","space-"+i+".txt");
+            double exactJac = mhs.exactJaccard(0,i);
             System.out.println("Exact Jac "+i+ " : "+ exactJac);
         }
 
@@ -39,28 +39,28 @@ public class MinHashSimilarities {
     //Methods
 
     // Returns the exact Jaccard Similarity of the file1 and file2
-    public double exactJaccard(String file1, String file2) {
+    public double exactJaccard(int file1, int file2) {
 
         String[] allDocs = minHash.allDocs();
 
-        int index1 = 0;
-        int index2 = 0;
-        for (int i = 0; i < allDocs.length; i ++){
-            if (allDocs[i].equals(file1)){
-                index1 = i;
-            }
-            if (allDocs[i].equals(file2)){
-                index2 = i;
-            }
-        }
+//        int index1 = 0;
+//        int index2 = 0;
+//        for (int i = 0; i < allDocs.length; i ++){
+//            if (allDocs[i].equals(file1)){
+//                index1 = i;
+//            }
+//            if (allDocs[i].equals(file2)){
+//                index2 = i;
+//            }
+//        }
 
         int numTerms = minHash.numTerms();
         int intersection = 0;
         int union = 0;
 
         for (int i = 0; i < numTerms; i++){
-            intersection += Math.min(termDocumentMatrix[i][index1], termDocumentMatrix[i][index2]);
-            union += Math.max(termDocumentMatrix[i][index1], termDocumentMatrix[i][index2]);
+            intersection += Math.min(termDocumentMatrix[i][file1], termDocumentMatrix[i][file2]);
+            union += Math.max(termDocumentMatrix[i][file1], termDocumentMatrix[i][file2]);
         }
         double result = (double) intersection/union;
 
@@ -68,17 +68,15 @@ public class MinHashSimilarities {
     }
 
     // Estimates and returns the Jaccard similarity of documents file1 and file2 by comparing the MinHash signatures of file1 and file2
-    public double approximateJaccard(String file1, String file2) {
+    public double approximateJaccard(int file1, int file2, int length) {
 
         int count = 0;
 
-        int file1Sig = minHasSigIndex(file1);
-        int file2Sig = minHasSigIndex(file2);
-
-        int length = minHashMatrix.length;
+//        int file1Sig = minHasSigIndex(file1);
+//        int file2Sig = minHasSigIndex(file2);
 
         for (int i = 0; i < length; i++){
-            if (minHashMatrix[i][file1Sig] == minHashMatrix[i][file2Sig]){
+            if (minHashMatrix[i][file1] == minHashMatrix[i][file2]){
                 count ++;
             }
         }

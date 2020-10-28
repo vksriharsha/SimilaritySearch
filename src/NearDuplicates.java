@@ -66,15 +66,31 @@ public class NearDuplicates {
     }
 
     public static void main(String[] args) {
-//        NearDuplicates nearDuplicates = new NearDuplicates("/Users/harshavk/Desktop/gitrepos/Docs/F17PA2", 400, 0.95);
-//
-//        ArrayList<String> a = nearDuplicates.nearDuplciateDetector("space-999.txt");
-//        System.out.println(a);
+        NearDuplicates nearDuplicates = new NearDuplicates("/Users/harshavk/Desktop/gitrepos/Docs/F17PA2_Small", 600, 0.9);
 
-        MinHashSimilarities minHashSimilarities = new MinHashSimilarities("/Users/harshavk/Desktop/gitrepos/Docs/F17PA2", 1);
+        //MinHashSimilarities minHashSimilarities = new MinHashSimilarities("/Users/harshavk/Desktop/gitrepos/Docs/F17PA2", 1);
 
-        System.out.printf(minHashSimilarities.exactJaccard("space-2.txt", "space-800.txt")+ "");
+        System.out.println();
+        System.out.println();
+        System.out.println("Experiment Set 1 :    Permuatations = 600,  s = 0.9");
+        System.out.println("___________________________________________________");
+        System.out.println();
 
+        ArrayList<String> exp1 = nearDuplicates.nearDuplciateDetector("space-29.txt");
+        System.out.println("Near duplicates of space-29.txt : "+ exp1);
+        System.out.println();
+        System.out.println();
+
+        ArrayList<String> exp2 = nearDuplicates.nearDuplciateDetector("baseball37.txt");
+        System.out.println("Near duplicates of baseball37.txt : "+ exp2);
+        System.out.println();
+        System.out.println();
+
+
+        ArrayList<String> exp3 = nearDuplicates.nearDuplciateDetector("hockey28.txt");
+        System.out.println("Near duplicates of hockey28.txt : "+ exp3);
+        System.out.println();
+        System.out.println();
     }
 
 }
