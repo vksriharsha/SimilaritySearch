@@ -16,7 +16,7 @@ public class MinHashTime {
         for(int i = 0; i<docs.length-1; i++) {
             for(int j=i+1; j<minHashSimilarities.getMinHash().allDocs().length; j++){
 
-                jaccardApprox[i][j]= minHashSimilarities.approximateJaccard(i, j, mlen);
+                jaccardApprox[i][j]= minHashSimilarities.approximateJaccard(docs[i], docs[j]);
                 jaccardApprox[j][i] = jaccardApprox[i][j];
 
 
@@ -35,7 +35,7 @@ public class MinHashTime {
         long startTimeExactJac = System.nanoTime();
         for(int i = 0; i<docs.length-1; i++) {
             for (int j = i + 1; j < minHashSimilarities.getMinHash().allDocs().length; j++) {
-                jaccardExact[i][j] = minHashSimilarities.exactJaccard(i, j);
+                jaccardExact[i][j] = minHashSimilarities.exactJaccard(docs[i], docs[j]);
                 jaccardExact[j][i] = jaccardExact[i][j];
 
             }
@@ -66,7 +66,7 @@ public class MinHashTime {
 
     public static void main(String[] args) {
         MinHashTime minHashTime = new MinHashTime();
-        minHashTime.timer("/Users/harshavk/Desktop/gitrepos/Docs/space", 600);
+        minHashTime.timer("/Users/harshavk/Desktop/Docs/space", 20);
 
     }
 }

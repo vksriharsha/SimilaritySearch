@@ -17,8 +17,8 @@ public class MinHashAccuracy {
             String document1 = allDocs[i];
             for( int j = i + 1; j < allDocs.length; j++){
                 String document2 = allDocs[j];
-                exactJS = minHashSim.exactJaccard(i, j);
-                approximateJS = minHashSim.approximateJaccard(i, j, minHashSim.getMinHash().minHashMatrix().length);
+                exactJS = minHashSim.exactJaccard(document1, document2);
+                approximateJS = minHashSim.approximateJaccard(document1, document2);
                 if (Math.abs(exactJS - approximateJS) > error){
                     numPairs ++;
                 }

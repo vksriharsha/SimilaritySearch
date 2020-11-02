@@ -13,6 +13,8 @@ public class MinHash {
     private int a[];
     private int b[];
     private int[][] permutations;
+    private String[] allDocs;
+    private HashMap<String,Integer> allDocsHashMap;
 
     private static final int INF = 9999999;
 
@@ -21,6 +23,7 @@ public class MinHash {
         this.folder = folder;
         this.numPermutations = numPermutations;
 
+        initializeAllDocs();
         preProcess();
 
         System.out.println("Ended Preprocessing");
@@ -39,34 +42,37 @@ public class MinHash {
         }
 
         System.out.println("Ended permutations generation");
-        //print2D(permutations);
-
-//        for(int i=0; i<numPermutations(); i++) {
-//            int numcollisions = 0;
-//            for (int j = 0; j < numTerms(); j++) {
-//                for (int k = 0; k < numTerms(); k++) {
-//                    if (j != k && permutations[j][1] == permutations[k][1]) {
-//                        numcollisions++;
-//                    }
-//                }
-//
-//            }
-//
-//            System.out.println("Num collisions in list "+i+" : " + numcollisions);
-//
-//        }
 
     }
+
+
+
+    public void initializeAllDocs(){
+
+        File docsFolder = new File(this.folder);
+        this.allDocs = docsFolder.list();
+        this.allDocsHashMap = new HashMap<>();
+
+        for(int i = 0 ; i < allDocs.length; i++){
+            this.allDocsHashMap.put(allDocs[i],(Integer)i);
+        }
+
+    }
+
+
 
     //Returns all the names of files in the document collection
     public String[] allDocs(){
-        String[] docsInFolder = null;
-
-        File docsFolder = new File(folder);
-        docsInFolder = docsFolder.list();
-
-        return docsInFolder;
+        return this.allDocs;
     }
+
+
+
+    public HashMap<String,Integer> allDocsHashMap(){
+        return this.allDocsHashMap;
+    }
+
+
 
 
     public void preProcess(){
@@ -150,14 +156,12 @@ public class MinHash {
             modifiedTermDocumentMatrix = new int[modifiedTermDocHash.size()][fileNum];
             termDocumentMatrix = new int[termDocHash.size()][fileNum];
 
-            //System.out.println("Resulting hashmap is : "+ termDocHash.size());
-
             modifiedNumTerms = modifiedTermDocHash.size();
             numTerms = termDocHash.size();
 
             int j=0;
             for (Map.Entry<String,Integer[]> entry : modifiedTermDocHash.entrySet()){
-                //System.out.println(j+ " : "+ entry.getKey());
+
                 Integer[] wordfreq = entry.getValue();
                 int[] wordfreqint = new int[wordfreq.length];
 
@@ -173,7 +177,7 @@ public class MinHash {
             int t=0;
 
             for (Map.Entry<String,Integer[]> entry : termDocHash.entrySet()){
-            //System.out.println(j+ " : "+ entry.getKey());
+
             Integer[] wordfreq = entry.getValue();
             int[] wordfreqint = new int[wordfreq.length];
 
@@ -186,57 +190,37 @@ public class MinHash {
 
         }
 
-
-
-
     }
+
+
 
     //Returns the MinHash Matrix of the collection
     public int[][] minHashMatrix(){
 
-        minHashMatrix = new int[numPermutations()][allDocs().length];
+        minHashMatrix = new int[numPermutations()][allDocs.length];
 
         for(int i=0 ; i<numPermutations(); i++){
-//            for(int j=0; j< allDocs().length; j++){
-//                minHashMatrix[i][j] = INF;
-//            }
             Arrays.fill(minHashMatrix[i],INF);
         }
 
         System.out.println("initialized minHash");
 
-//        for(int i=0; i<numPermutations(); i++){
-//            for(int j=0; j<modifiedNumTerms(); j++){
-//                for(int k=0; k< allDocs().length; k++){
-//                    if(modifiedTermDocumentMatrix[j][k] == 1){
-//
-//                        if(minHashMatrix[i][k] > permutations[j][i]){
-//                            minHashMatrix[i][k] = permutations[j][i];
-//                        }
-//                    }
-//                }
-//            }
-//            System.out.println("Permutation : "+i + " is done.");
-//        }
-
 
         for(int i=0; i<numPermutations(); i++){
-            for(int j=0; j< allDocs().length; j++){
-//                int [] termCol = MatrixOperations.getColumn(modifiedTermDocumentMatrix,j);
-//                int [] permCol = MatrixOperations.getColumn(permutations,i);
+            for(int j=0; j< allDocs.length; j++){
                 int [] res = MatrixOperations.elementWiseMultiplication(modifiedTermDocumentMatrix,j, permutations, i);
                 int minRes = MatrixOperations.minimumValueInVector(res);
                 minHashMatrix[i][j] = minRes;
             }
-            //System.out.println("Done for permutation : "+i);
         }
-
 
         System.out.println("Done Calculating minHash");
 
 
         return minHashMatrix;
     }
+
+
 
 
     //Return the term document matrix of the collection
@@ -290,13 +274,6 @@ public class MinHash {
         int[][] mhm = mh.minHashMatrix();
         System.out.println("Printing matrix");
         print2D(output);
-//        System.out.println();
-//        System.out.println("***********************************");
-//        System.out.println();
-//        print2D(mh.modifiedTermDocumentMatrix);
-
-
-
 
     }
 
